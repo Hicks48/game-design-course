@@ -2,7 +2,7 @@ Game Design:
 
 	Basic Description:
 	
-		Idea of game is just to stay a life. You start with a small space stations, few credits
+		Idea of game is just to stay alive. You start with a small space stations, few credits
 		and an ragged asteroid miner. Credits can be used to buy fuel, food, upgrades to ship,
 		space suit and space station. Credits can be obtained by mining asteroids and selling
 		minerals to shop. Bandits and hazardous environment make mining dangerous.
@@ -15,3 +15,10 @@ Game Design:
 		Shop doesn't always have the same goods. Selection of the shop depends on the suppliers
 		of this small partition of space. So make sure to always have some credits in stock so
 		that you can make a buy when something interesting comes around.
+
+
+	Random Events:
+	
+		-Special black market shops
+		-bandits
+		-meteor showers
