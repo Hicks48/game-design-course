@@ -84,11 +84,11 @@ GameObject:
   - 4: {fileID: 90827511}
   - 212: {fileID: 90827510}
   - 50: {fileID: 90827509}
+  - 58: {fileID: 90827512}
   - 114: {fileID: 90827508}
-  - 61: {fileID: 90827512}
   - 114: {fileID: 90827513}
   m_Layer: 0
-  m_Name: space-dude
+  m_Name: space-engineer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,8 +106,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1664051085}
-  trustPowerMultiplier: 4
-  thrust: 32
+  trustFowardPowerMultiplier: 4
+  trustBackwardPowerMultiplier: 4
+  trustSidewaysPowerMultiplier: 4
+  rotationSpeed: 100
+  foward: 119
+  back: 115
+  left: 97
+  right: 100
   initFuel: 5
   initAir: 100
 --- !u!50 &90827509
@@ -159,8 +165,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
---- !u!61 &90827512
-BoxCollider2D:
+--- !u!58 &90827512
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -168,7 +174,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Size: {x: 1.20000005, y: 1.10000002}
+  m_Radius: .699999988
   m_Center: {x: 0, y: 0}
 --- !u!114 &90827513
 MonoBehaviour:
@@ -183,6 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   focus: {fileID: 0}
   maxDistance: 1
+  radarCollider: {fileID: 0}
 --- !u!1 &135838834
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,8 +200,8 @@ GameObject:
   - 4: {fileID: 135838836}
   - 212: {fileID: 135838835}
   - 50: {fileID: 135838839}
-  - 61: {fileID: 135838838}
   - 114: {fileID: 135838837}
+  - 58: {fileID: 135838838}
   m_Layer: 0
   m_Name: space-ship
   m_TagString: Untagged
@@ -250,9 +257,8 @@ MonoBehaviour:
   board: 101
   unboard: 113
   enterArea: {fileID: 135838838}
-  seats: 1
---- !u!61 &135838838
-BoxCollider2D:
+--- !u!58 &135838838
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -260,7 +266,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Size: {x: 3.5, y: 3.5}
+  m_Radius: 1.5
   m_Center: {x: 0, y: 0}
 --- !u!50 &135838839
 Rigidbody2D:
@@ -386,12 +392,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1360917312}
   - 114: {fileID: 1360917316}
-  - 61: {fileID: 1360917315}
-  - 61: {fileID: 1360917314}
-  - 61: {fileID: 1360917313}
-  - 61: {fileID: 1360917317}
   m_Layer: 0
-  m_Name: house
+  m_Name: module
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -411,39 +413,6 @@ Transform:
   - {fileID: 603583923}
   m_Father: {fileID: 0}
   m_RootOrder: 3
---- !u!61 &1360917313
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1360917311}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Size: {x: 8.60000038, y: .5}
-  m_Center: {x: 10.1000004, y: -4.80000019}
---- !u!61 &1360917314
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1360917311}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Size: {x: .5, y: 7}
-  m_Center: {x: 14.8000002, y: -1.5}
---- !u!61 &1360917315
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1360917311}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Size: {x: .5, y: 7}
-  m_Center: {x: 5.4000001, y: -1.5}
 --- !u!114 &1360917316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,18 +426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roof: {fileID: 603583922}
   floor: {fileID: 463416468}
-  insideCollider: {fileID: 1360917317}
---- !u!61 &1360917317
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1360917311}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Size: {x: 9, y: 6.5}
-  m_Center: {x: 10, y: -1}
+  insideCollider: {fileID: 0}
 --- !u!1 &1419138548
 GameObject:
   m_ObjectHideFlags: 0
