@@ -8,14 +8,16 @@ public class SpaceStation : MonoBehaviour {
 	public BoxCollider2D insideCollider;
 
 	private List<GameObject> gameobjectsInside;
+	private bool forceSee;
 
 	void Start () {
 		this.gameobjectsInside = new List<GameObject>();
+		this.forceSee = false;
 	}
 	
 	void Update () {
-		/* If no one inside show */
-		if (this.gameobjectsInside.Count == 0) {
+		/* If no one inside show or forceSee on */
+		if (this.gameobjectsInside.Count == 0 || this.forceSee) {
 			this.roof.SetActive (true);
 			this.floor.SetActive (false);
 		}
@@ -28,7 +30,6 @@ public class SpaceStation : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		Debug.Log("here :D");
 		if(this.objectOfInHierarchy(collider.gameObject)) {
 			return;
 		}
@@ -44,7 +45,10 @@ public class SpaceStation : MonoBehaviour {
 		this.gameobjectsInside.Remove (collider.gameObject);
 	}
 
-	/* Needs to optimazation */
+	public void setForceSee(bool forceSee) {
+		this.forceSee = forceSee;
+	}
+
 	private bool objectOfInHierarchy(GameObject go) {
 		Component[] hierarchyComponents = this.gameObject.GetComponentsInChildren<Transform> ();
 
@@ -55,14 +59,5 @@ public class SpaceStation : MonoBehaviour {
 		}
 
 		return false;
-	}
-
-	private string toString() {
-		string s = "";
-		for (int i = 0; i < this.gameobjectsInside.Count; i ++) {
-			s = " " + this.gameobjectsInside[i];
-		}
-
-		return s;
 	}
 }

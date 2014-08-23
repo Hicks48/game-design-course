@@ -5,17 +5,12 @@ using System.Collections.Generic;
 public class Radar : MonoBehaviour {
 	public GameObject focus;
 	public float maxDistance;
+	public CircleCollider2D radarCollider;
 
-	private CircleCollider2D radarCollider;
 	private List<GameObject> gameobjectsInRadious;
 
 	void Start () {
-		/* Doesn't work? */
-		this.radarCollider = new CircleCollider2D ();
-
 		this.radarCollider.radius = maxDistance;
-		this.radarCollider.isTrigger = true;
-
 		this.gameobjectsInRadious = new List<GameObject>();
 	}
 	
