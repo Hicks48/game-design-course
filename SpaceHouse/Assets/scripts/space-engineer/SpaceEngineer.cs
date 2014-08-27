@@ -9,11 +9,10 @@ public class SpaceEngineer : MonoBehaviour {
 	public float trustBackwardPowerMultiplier;
 	public float trustSidewaysPowerMultiplier;
 	public float rotationSpeed;
+	public float walkingSpeed;
 
 	public KeyCode foward;
 	public KeyCode back;
-	public KeyCode left;
-	public KeyCode right;
 
 	/* Initial value setters for variables */
 	public float initFuel;
@@ -23,11 +22,16 @@ public class SpaceEngineer : MonoBehaviour {
 	private float fuel;
 	private float air;
 	private bool alive;
+	private bool useOxygen;
+
+	private bool outside;
 
 	void Start () {
 		this.fuel = initFuel;
 		this.air = initAir;
 		this.alive = true;
+		this.useOxygen = true;
+		this.outside = true;
 	}
 	
 	void Update () {
@@ -40,22 +44,35 @@ public class SpaceEngineer : MonoBehaviour {
 		/* Fuel and movement */
 		if (this.fuel < 0.0f) {
 			this.fuel = 0.0f;
+
+			if(!this.outside) {
+				doMovementInside();
+			}
 		}
 
 		else {
-			if (this.doMovement ()) {
-				this.fuel = this.fuel - Time.deltaTime;
+			if (this.outside) {
+				if(this.doMovement ()) {
+					this.fuel = this.fuel - Time.deltaTime;
+				}
+			}
+
+			else {
+				doMovementInside();
 			}
 		}
 
 		/* Reduce air */
-		if (this.air > 0.0f) {
-			this.air = this.air - Time.deltaTime;
-		}
 
-		else {
-			this.air = 0.0f;
-			this.alive = false;
+		if (this.useOxygen) {
+			if (this.air > 0.0f) {
+				this.air = this.air - Time.deltaTime;
+			}
+
+			else {
+				this.air = 0.0f;
+				this.alive = false;
+			}
 		}
 	}
 
@@ -70,47 +87,74 @@ public class SpaceEngineer : MonoBehaviour {
 		}
 	}
 
+	public void setOutside(bool isOutside) {
+		this.outside = isOutside;
+	}
+
+	public void setUseOxygen(bool use) {
+		useOxygen = use;
+	}
+
+	public float getAir() {
+		return this.air;
+	}
+
+	public void setAir(float air) {
+		this.air = air;
+	}
+
+	public void kill() {
+		this.alive = false;
+	}
+
+	/* Privates */
+
+	private void doMovementInside() {
+		rigidbody2D.velocity = Vector2.zero;
+		rigidbody2D.angularVelocity = 0.0f;
+
+		/* Heading = mouse normalized vector to position */
+		Vector2 towardsHeading = getToWardsHeading (getHeadingVector ());
+		Vector2 foward = this.getFoward ();
+
+		/* Turn towards heading */
+		turnTowardsHeading (towardsHeading, foward);
+
+		if (Input.GetKey(this.foward)) {
+			rigidbody2D.AddForce(foward * this.walkingSpeed);
+		}
+		
+		if (Input.GetKey (this.back)) {
+			rigidbody2D.AddForce((-1) * foward * this.walkingSpeed);
+		}
+	}
+
 	private bool doMovement() {
+		if(this.fuel <= 0.0f) {
+			return false;
+		}
+
 		/* Movement */
 		bool moved = false;
 		
 		/* Heading = mouse normalized vector to position */
 		Vector2 towardsHeading = getToWardsHeading (getHeadingVector ());
 		Vector2 foward = this.getFoward ();
-		Vector2 left = getLeft (foward);
-		
+
 		/* Turn towards heading */
-		Debug.Log (Mathf.Rad2Deg * Mathf.Asin(this.transform.position.x + towardsHeading.x));
-		transform.rotation = Quaternion.Euler (0, 0, Mathf.Lerp(transform.rotation.z, (-1) * Mathf.Rad2Deg * Mathf.Asin(this.transform.position.x + towardsHeading.x), Time.deltaTime * this.rotationSpeed));
+		turnTowardsHeading (towardsHeading, foward);
 		
-		if (Input.GetKey(this.foward) && this.fuel > 0.0f) {
-			rigidbody2D.AddForce(towardsHeading * trustFowardPowerMultiplier);
+		if (Input.GetKey(this.foward)) {
+			rigidbody2D.AddForce(foward * trustFowardPowerMultiplier);
 			moved = true;
 		}
 		
-		if (Input.GetKey (this.back) && this.fuel > 0.0f) {
+		if (Input.GetKey (this.back)) {
 			rigidbody2D.AddForce((-1) * towardsHeading * trustBackwardPowerMultiplier);
-			moved = true;
-		}
-		
-		if (Input.GetKey (this.left) && this.fuel > 0.0f) {
-			rigidbody2D.AddForce(left * trustSidewaysPowerMultiplier);
-			moved = true;
-		}
-		
-		if(Input.GetKey (this.right) && this.fuel > 0.0f) {
-			rigidbody2D.AddForce((-1) * left * trustSidewaysPowerMultiplier);
 			moved = true;
 		}
 
 		return moved;
-	}
-
-	/* Fix */
-	private Vector2 getLeft(Vector2 foward) {
-		float xDiff = ((-1) * Mathf.Pow(this.transform.position.x, 2.0f) + foward.x * this.transform.position.x) / ((-1) * this.transform.position.x + foward.x);
-		float yDiff = ((-1) * Mathf.Pow(this.transform.position.y, 2.0f) + foward.y * this.transform.position.y) / ((-1) * this.transform.position.y + foward.y);
-		return new Vector2(this.transform.position.x - xDiff, this.transform.position.y - yDiff).normalized;
 	}
 
 	private Vector2 getToWardsHeading(Vector2 heading) {
@@ -125,6 +169,46 @@ public class SpaceEngineer : MonoBehaviour {
 	}
 
 	private Vector2 getFoward() {
-		return new Vector2 (Mathf.Sin(this.transform.rotation.z) - this.transform.position.x, Mathf.Cos(this.transform.rotation.z) - this.transform.position.y);
+		if (this.transform.rotation.eulerAngles.z <= 0.0f && this.transform.rotation.eulerAngles.z >= 90) {
+			return new Vector2 (Mathf.Sin (Mathf.Deg2Rad * this.transform.rotation.eulerAngles.z), Mathf.Cos (Mathf.Deg2Rad * this.transform.rotation.eulerAngles.z));
+		} 
+
+		else if (this.transform.rotation.eulerAngles.z < 90 && this.transform.rotation.eulerAngles.z > 180) {
+			return new Vector2 (Mathf.Cos (Mathf.Deg2Rad * (this.transform.rotation.eulerAngles.z - 90)), Mathf.Sin (Mathf.Deg2Rad * (this.transform.rotation.eulerAngles.z - 90)));
+		} 
+
+		else if (this.transform.rotation.eulerAngles.z < 180 && this.transform.rotation.eulerAngles.z > 270) {
+			return new Vector2 (Mathf.Sin (Mathf.Deg2Rad * (this.transform.rotation.eulerAngles.z - 180)), Mathf.Cos (Mathf.Deg2Rad * (this.transform.rotation.eulerAngles.z - 180)));
+		} 
+
+		else {
+			return new Vector2 (Mathf.Cos (Mathf.Deg2Rad * (this.transform.rotation.eulerAngles.z - 270)), Mathf.Sin (Mathf.Deg2Rad * (this.transform.rotation.eulerAngles.z - 270)));
+		}
+	}
+
+	private void turnTowardsHeading(Vector2 heading, Vector2 foward) {
+		float angleHeading = getVectorsUnityAngle (heading);
+		float angleFoward = getVectorsUnityAngle (foward);
+
+		if (Vector2.Angle (foward, heading) - Mathf.Abs (angleHeading - angleFoward) < 0.1) {
+			this.transform.rotation = Quaternion.Euler (0, 0, Mathf.Lerp (this.transform.rotation.z, Mathf.Rad2Deg * angleHeading, Time.deltaTime * this.rotationSpeed));
+		} 
+
+		else {
+			this.transform.rotation = Quaternion.Euler (0, 0, Mathf.Lerp (this.transform.rotation.z, Mathf.Rad2Deg * angleHeading, Time.deltaTime * this.rotationSpeed));
+		}
+	}
+
+	private float getVectorsUnityAngle(Vector2 vector) {
+		Vector2 j = new Vector2 (0, 1);
+		Vector2 v = vector.normalized;
+
+		if (v.x < 0) {
+			return Mathf.Acos (Vector2.Dot (j, v));
+		} 
+
+		else {
+			return 2 * Mathf.PI - Mathf.Acos (Vector2.Dot (j, v));
+		}
 	}
 }
