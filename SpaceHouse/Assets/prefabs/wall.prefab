@@ -10,11 +10,13 @@ GameObject:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
   - 50: {fileID: 5000000}
+  - 61: {fileID: 6100002}
   - 61: {fileID: 6100000}
+  - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: turret-shot
-  m_TagString: Untagged
+  m_Name: wall
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,8 +28,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -2.88933611, y: -5.98221302, z: 0}
+  m_LocalScale: {x: 1, y: 3.70000005, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -42,7 +44,7 @@ Rigidbody2D:
   m_AngularDrag: 0
   m_GravityScale: 0
   m_FixedAngle: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -54,9 +56,20 @@ BoxCollider2D:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Size: {x: 2.28793192, y: 2.5599997}
+  m_Center: {x: -1.19972014, y: 0}
+--- !u!61 &6100002
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Size: {x: .639999986, y: .639999986}
-  m_Center: {x: 0, y: 0}
+  m_Size: {x: .648936272, y: 2.39999962}
+  m_Center: {x: -.0675125122, y: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -65,11 +78,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f5b271fb0c03470b9a91317ebc2fe14, type: 3}
+  m_Script: {fileID: 11500000, guid: 93bac2730ef104ecca6c6c5f056c7f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
-  hitBox: {fileID: 6100000}
+  repairArea: {fileID: 6100000}
+  strenght: {fileID: 11400002}
+  repairKey: 101
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80822abdc69ce4a32973e788ed414284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxStrenght: 100
+  strenght: 100
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -89,8 +116,8 @@ SpriteRenderer:
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
-  m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: 1156248889e924c9595ea3944c7536a9, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: f9b54498ee9db461f8a547e23204c5c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

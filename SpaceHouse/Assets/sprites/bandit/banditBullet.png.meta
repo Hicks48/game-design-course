@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 1156248889e924c9595ea3944c7536a9
+guid: dbedfa39d614c3640a5b052013f29c38
 TextureImporter:
   fileIDToRecycleName:
-    21300000: turret-shot
+    21300000: banditBullet
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

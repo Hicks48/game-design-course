@@ -35,8 +35,8 @@ public class MeteoriteShower : MonoBehaviour {
 	private void SpawnRandomMeteorite() {
 		Vector3 position = spawnCenter + (spawnAxis * Random.Range(-(meteoriteSpawnSpread / 2), (meteoriteSpawnSpread / 2)));
 		GameObject meteoriteInstance = (GameObject) Instantiate(meteoritePrefab, position, Quaternion.identity);
-		Meteorite meteorite = meteoriteInstance.GetComponent<Meteorite>();
-		meteorite.direction = direction;
+		RayMovement rayMovement = meteoriteInstance.GetComponent<RayMovement>();
+		rayMovement.direction = direction;
 		spawned++;
 	}
 
