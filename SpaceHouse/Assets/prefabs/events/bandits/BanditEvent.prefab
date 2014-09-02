@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   banditPrefab: {fileID: 100000, guid: 9c5e531ce88a87a4583b50b61b1feb97, type: 2}
-  levels: 2
+  levels: 3
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

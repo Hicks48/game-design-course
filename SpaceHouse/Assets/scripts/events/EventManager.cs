@@ -5,10 +5,12 @@ public class EventManager : MonoBehaviour {
 
 	public GameObject[] randomEvents;
 	public float[] randomEventProbabilities; //probability of startin any given event is eventProbability / sum of all eventProbabilities
+	public GameObject[] eventAlarms;
 	public float randomEventFrequency = 10f;
 
 	private float nextRandomEventTime;
 	private float overallRandomEventProbability;
+	private GameObject lastEvent = null;
 
 	// Use this for initialization
 	void Start () {
@@ -20,7 +22,7 @@ public class EventManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time > nextRandomEventTime) {
+		if(lastEvent == null && Time.time > nextRandomEventTime) {
 			StartRandomEvent();
 			nextRandomEventTime = NewRandomEventTime();
 		}
@@ -35,7 +37,8 @@ public class EventManager : MonoBehaviour {
 			eventIndex++;
 			probability += randomEventProbabilities[eventIndex];
 		}
-		Instantiate (randomEvents[eventIndex]);
+		lastEvent = (GameObject) Instantiate (randomEvents[eventIndex]);
+		Instantiate(eventAlarms[eventIndex], new Vector3(0, 0, -5f), Quaternion.identity);
 		Debug.Log ("random event: " + randomEvents[eventIndex].name);
 	}
 

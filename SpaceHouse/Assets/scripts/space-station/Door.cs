@@ -11,4 +11,12 @@ public class Door : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	public void Open() {
+		this.door.enabled = false;
+	}
+
+	public void Close() {
+		this.door.enabled = true;
+	}
 }

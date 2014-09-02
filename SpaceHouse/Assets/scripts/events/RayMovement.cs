@@ -33,7 +33,7 @@ public class RayMovement : MonoBehaviour {
 
 	private bool IsAtTargetLocation() {
 		return (startRightOfTarget && transform.position.x < target.x) ||
-			(startTopOfTarget && transform.position.y < target.y) ||
+				(startTopOfTarget && transform.position.y < target.y) ||
 				(!startRightOfTarget && transform.position.x > target.x) ||
 				(!startTopOfTarget && transform.position.y > target.y);
 	}

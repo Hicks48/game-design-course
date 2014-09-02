@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 5c8f2b74bbefe5044a061d7d7861a654
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - alarmSound: {fileID: 8300000, guid: 1c00f05a2982a864191f3cca59c5c29c, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
