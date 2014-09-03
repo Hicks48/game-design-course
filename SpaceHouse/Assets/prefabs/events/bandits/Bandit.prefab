@@ -10,9 +10,10 @@ GameObject:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
   - 114: {fileID: 11400000}
-  m_Layer: 0
+  - 58: {fileID: 5800000}
+  m_Layer: 2
   m_Name: Bandit
-  m_TagString: Untagged
+  m_TagString: bandit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,6 +30,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!58 &5800000
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Radius: .5
+  m_Center: {x: 0, y: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -41,13 +53,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 100000, guid: a047af6c825b2324d9ce29b87e939b9b, type: 2}
+  centerPosition: {x: 15, y: 0, z: 0}
   targetDistance: 10
   spawnDistance: 50
   rotationSpeed: 10
-  moveInSpeed: 20
+  moveInSpeed: 30
   banditsInCurrentWave: 12
   index: 0
-  firingSpeed: 2
+  firingSpeed: 1
   lulzMode: 0
 --- !u!212 &21200000
 SpriteRenderer:

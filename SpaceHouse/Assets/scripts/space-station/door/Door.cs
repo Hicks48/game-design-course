@@ -3,15 +3,7 @@ using System.Collections;
 
 public class Door : MonoBehaviour {
 	public BoxCollider2D door;
-
-	void Start () {
-		
-	}
 	
-	void Update () {
-		
-	}
-
 	public void Open() {
 		this.door.enabled = false;
 	}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Meteorite : MonoBehaviour {
 
-	public GameObject hitPrefab;
+	public float damage = 5f;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +16,9 @@ public class Meteorite : MonoBehaviour {
 	}
 
 	public void OnRayMovementHit(RaycastHit2D hit) {
-		if(hit.collider != null && hit.transform.tag == "Space Station") Instantiate(hitPrefab, hit.point, Quaternion.identity);
+		if(hit.collider != null && hit.transform.tag == "wall") {
+			Strenght strength = hit.transform.GetComponent<Strenght>();
+			strength.damage(damage);
+		}
 	}
 }

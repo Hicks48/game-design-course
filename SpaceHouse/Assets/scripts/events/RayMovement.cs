@@ -6,6 +6,7 @@ public class RayMovement : MonoBehaviour {
 	public Vector3 direction = Vector3.right;
 	public float speed = 10f;
 	public float maxDistance = 1000f;
+	public float offset = 0f;
 
 	private bool startRightOfTarget;
 	private bool startTopOfTarget;
@@ -13,6 +14,8 @@ public class RayMovement : MonoBehaviour {
 	private Vector3 target;
 
 	void Start () {
+		direction = direction.normalized;
+		transform.position += (direction * offset);
 		hit = Physics2D.Raycast(transform.position, direction, maxDistance);
 		if(hit.collider != null) target = hit.point;
 		else target = transform.position + (direction * maxDistance);

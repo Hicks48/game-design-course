@@ -4,6 +4,7 @@ using System.Collections;
 public class BanditController : MonoBehaviour {
 
 	public GameObject bulletPrefab;
+	public Vector3 centerPosition;
 	public float targetDistance = 20f;
 	public float spawnDistance = 300f;
 	public float rotationSpeed = 10f;
@@ -12,8 +13,7 @@ public class BanditController : MonoBehaviour {
 	public int index = 0;
 	public float firingSpeed = 2f;
 	public bool lulzMode = false;
-
-	private GameObject station;
+	
 	private float currentDistance;
 	private float spawnTime;
 	private bool targetDistanceReached = false;
@@ -21,7 +21,6 @@ public class BanditController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		station = GameObject.FindGameObjectWithTag("Space Station");
 		spawnTime = Time.time;
 		spawnDistance += targetDistance;
 		currentDistance = spawnDistance;
@@ -39,7 +38,7 @@ public class BanditController : MonoBehaviour {
 		if(!targetDistanceReached) {
 			float delta = (Time.time - spawnTime) / ((spawnDistance - targetDistance) / moveInSpeed);
 			currentDistance = Mathf.Lerp(spawnDistance, targetDistance, delta);
-			if(currentDistance <= targetDistance) targetDistanceReached = true;
+			if(currentDistance <= targetDistance) OnTargetDistanceReached();
 		}
 		float lulz = 0f;
 		if(lulzMode) {
@@ -48,19 +47,25 @@ public class BanditController : MonoBehaviour {
 		Vector3 newPosition = Vector3.right * (currentDistance + lulz);
 		float rotation = ((Mathf.PI * 2) * ((Time.time % rotationSpeed) / rotationSpeed)) + ((Mathf.PI * 2) * ((float) index / banditsInCurrentWave));
 		newPosition = Common.RotateZ(newPosition, rotation);
-		newPosition += station.transform.position;
+		newPosition += centerPosition;
 		transform.position = newPosition;
+	}
+
+	private void OnTargetDistanceReached() {
+		targetDistanceReached = true;
+		lastFiringTime = Time.time + (((float) index / banditsInCurrentWave) * firingSpeed);
 	}
 
 	private void Fire() {
 		lastFiringTime = Time.time;
 		GameObject bulletInstance = (GameObject) Instantiate(bulletPrefab, transform.position, Quaternion.identity);
 		RayMovement rayMovement = bulletInstance.GetComponent<RayMovement>();
-		rayMovement.direction = (station.transform.position - transform.position).normalized;
+		rayMovement.direction = (centerPosition - transform.position).normalized;
 		rayMovement.maxDistance = currentDistance;
+		rayMovement.offset = 0f;
 	}
 
 	private bool IsTimeToFire() {
-		return (Time.time - lastFiringTime >= firingSpeed) && (Time.time % firingSpeed) > (((float) index / banditsInCurrentWave) * firingSpeed);
+		return Time.time - lastFiringTime >= firingSpeed;
 	}
 }
